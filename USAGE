@@ -1,0 +1,44 @@
+FreeWater and FW corrected DTI metrics pipeline
+===============================================
+
+Run the FreeWater pipeline, including FW-corrected DTI metrics estimation
+
+USAGE
+
+nextflow run main.nf [OPTIONAL_ARGUMENTS] --input
+
+DESCRIPTION
+
+    --input=/path/to/[root]             Root folder containing multiple subjects, with the following files.
+
+                                        [input]
+                                        ├── sub1
+                                        │   ├── brain_mask.nii.gz
+                                        │   ├── bval
+                                        │   ├── bvec
+                                        │   └── dwi.nii.gz
+                                        └── sub2
+                                            ├── brain_mask.nii.gz
+                                            ├── bval
+                                            ├── bvec
+                                            └── dwi.nii.gz
+
+Files can come out of the TractoFlow pipeline, including all preprocessing steps. If so, you should select the
+DWI in Resample_DWI, brain mask in Resample_B0, bval/bvec from Eddy_Topup. 
+
+OPTIONAL ARGUMENTS (current value)
+
+--fw_nb_threads                         Number of threads to use for FreeWater fitting. Works best with 1. ($fw_nb_threads).
+--para_diff                             Axial diffusivity (AD) in the Corpus Callosum. ($para_diff)
+--iso_diff                              Mean diffusivity (MD) in ventricles. ($iso_diff)
+--perp_diff_min                         Radial diffusivity (RD) minimum. ($perp_diff_min)
+--perp_diff_max                         Radial diffusivity (RD) maximum. ($perp_diff_max)
+--lambda1                               First regularization parameter. ($lambda1)
+--lambda2                               Second regularization parameter. ($lambda2)
+
+NOTES
+
+Requires AMICO installed.
+
+The intermediate working directory is, by default, set to './work'.
+To change it, use the '-w WORK_DIR' argument.
