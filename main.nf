@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 params.input = false
+params.load_kernels = false
 params.help = false
 
 if(params.help) {
@@ -89,34 +90,39 @@ process Compute_FreeWater {
     file "${sid}__FIT_nrmse.nii.gz"
 
     script:
+    option_freewater=""
+    if (params.load_kernels) {
+      option_freewater="--load_kernels $params.load_kernels"
+    }
     """
     scil_compute_freewater.py $dwi $bvals $bvecs\
-    			      --mask $brain_mask\
-			      --para_diff $params.para_diff\
-			      --iso_diff $params.iso_diff\
-			      --perp_diff_min $params.perp_diff_min\
-			      --perp_diff_max $params.perp_diff_max\
-			      --lambda1 $params.lambda1\
-			      --lambda2 $params.lambda2\
-			      --processes $params.fw_nb_threads
+        --mask $brain_mask\
+        --para_diff $params.para_diff\
+        --perp_diff_min $params.perp_diff_min\
+        --perp_diff_max $params.perp_diff_max\
+        --iso_diff $params.iso_diff\
+        --lambda1 $params.lambda1\
+        --processes $params.fw_nb_threads\
+        --lambda2 $params.lambda2\
+        $option_freewater
 
     mv results/dwi_fw_corrected.nii.gz ${sid}__dwi_fw_corrected.nii.gz
     mv results/FIT_dir.nii.gz ${sid}__FIT_dir.nii.gz
     mv results/FIT_FiberVolume.nii.gz ${sid}__FIT_FiberVolume.nii.gz
     mv results/FIT_FW.nii.gz ${sid}__FIT_FW.nii.gz
     mv results/FIT_nrmse.nii.gz ${sid}__FIT_nrmse.nii.gz
-    rm -rf results 
+    rm -rf results
     """
 }
 
 grads_mask_for_metrics
     .join(fw_corrected_dwi)
     .set{data_for_dti_metrics}
+
 process FW_Corrected_Metrics {
     input:
-    set sid, file(brain_mask), file(bvals), file(bvecs), file(fw_corrected_dwi) from data_for_dti_metrics
+      set sid, file(brain_mask), file(bvals), file(bvecs), file(fw_corrected_dwi) from data_for_dti_metrics
 
-    output:
     output:
     file "${sid}__fw_corr_ad.nii.gz"
     file "${sid}__fw_corr_evecs.nii.gz"
