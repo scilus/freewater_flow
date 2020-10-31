@@ -28,8 +28,7 @@ DWI in Resample_DWI, brain mask in Resample_B0, bval/bvec from Eddy_Topup.
 
 OPTIONAL ARGUMENTS (current value)
 
---load_kernels                          Input directory where the COMMIT kernels are located.
---fw_nb_threads                         Number of threads to use for FreeWater fitting. Works best with 1. ($fw_nb_threads).
+--nb_threads                            Number of threads to use for FreeWater fitting. Works best with 1. ($nb_threads).
 --para_diff                             Axial diffusivity (AD) in the Corpus Callosum. ($para_diff)
 --iso_diff                              Mean diffusivity (MD) in ventricles. ($iso_diff)
 --perp_diff_min                         Radial diffusivity (RD) minimum. ($perp_diff_min)
