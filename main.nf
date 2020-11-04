@@ -153,6 +153,8 @@ grads_mask_for_metrics
     .set{data_for_dti_metrics}
 
 process FW_Corrected_Metrics {
+    cpus 3
+
     input:
       set sid, file(brain_mask), file(bval), file(bvec), file(fw_corrected_dwi) from data_for_dti_metrics
 
@@ -186,6 +188,9 @@ process FW_Corrected_Metrics {
 
     script:
     """
+    export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
+    export OMP_NUM_THREADS=1
+    export OPENBLAS_NUM_THREADS=1
     scil_compute_dti_metrics.py $fw_corrected_dwi $bval $bvec --mask $brain_mask\
         --ad ${sid}__fw_corr_ad.nii.gz --evecs ${sid}__fw_corr_evecs.nii.gz\
         --evals ${sid}__fw_corr_evals.nii.gz --fa ${sid}__fw_corr_fa.nii.gz\
