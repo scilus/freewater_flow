@@ -53,6 +53,7 @@ log.info "Perpendicular diff min: $params.perp_diff_min"
 log.info "Perpendicular diff max: $params.perp_diff_max"
 log.info "Lambda 1: $params.lambda1"
 log.info "Lambda 2: $params.lambda2"
+log.info "b-threshold: $params.b_thr"
 log.info ""
 
 log.info "Number of processes per tasks"
