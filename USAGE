@@ -1,0 +1,47 @@
+FreeWater and FW corrected DTI metrics pipeline
+===============================================
+
+Run the FreeWater pipeline, including FW-corrected DTI metrics estimation
+
+USAGE
+
+nextflow run main.nf [OPTIONAL_ARGUMENTS] --input
+
+DESCRIPTION
+
+    --input=/path/to/[root]             Root folder containing multiple subjects, with the following files.
+
+                                        [input]
+                                        ├── sub1
+                                        │   ├── brain_mask.nii.gz
+                                        │   ├── bval
+                                        │   ├── bvec
+                                        │   └── dwi.nii.gz
+                                        └── sub2
+                                            ├── brain_mask.nii.gz
+                                            ├── bval
+                                            ├── bvec
+                                            └── dwi.nii.gz
+
+Files should come out of the Tractoflow pipeline, with the following source:
+- dwi.nii.gz: from Resample_DWI
+- brain_mask.nii.gz: from Resample_B0
+- bval/bvec: from Eddy_Topup
+
+OPTIONAL ARGUMENTS (current value)
+
+--nb_threads                            Number of threads to use for FreeWater fitting. Works best with 1. ($nb_threads).
+--para_diff                             Axial diffusivity (AD) in the Corpus Callosum. ($para_diff)
+--iso_diff                              Mean diffusivity (MD) in ventricles. ($iso_diff)
+--perp_diff_min                         Radial diffusivity (RD) minimum. ($perp_diff_min)
+--perp_diff_max                         Radial diffusivity (RD) maximum. ($perp_diff_max)
+--lambda1                               First regularization parameter. ($lambda1)
+--lambda2                               Second regularization parameter. ($lambda2)
+--b_thr                                 Limit value to consider that a b-value is on an existing shell. Above this limit, the b-value is placed on a new shell. This includes b0s values. ($b_thr)
+
+NOTES
+
+Requires AMICO installed.
+
+The intermediate working directory is, by default, set to './work'.
+To change it, use the '-w WORK_DIR' argument.
