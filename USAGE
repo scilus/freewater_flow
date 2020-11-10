@@ -35,6 +35,7 @@ OPTIONAL ARGUMENTS (current value)
 --perp_diff_max                         Radial diffusivity (RD) maximum. ($perp_diff_max)
 --lambda1                               First regularization parameter. ($lambda1)
 --lambda2                               Second regularization parameter. ($lambda2)
+--b_thr                                 Limit value to consider that a b-value is on an existing shell. Above this limit, the b-value is placed on a new shell. This includes b0s values. ($b_thr)
 
 NOTES
 

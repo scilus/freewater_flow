@@ -15,7 +15,8 @@ if(params.help) {
                 "perp_diff_max": "$params.perp_diff_max",
                 "lambda1": "$params.lambda1",
                 "lambda2": "$params.lambda2",
-                "output_dir":"$params.output_dir"]
+                "output_dir":"$params.output_dir",
+                "b_thr":"$params.b_thr"]
 
     template = engine.createTemplate(usage.text).make(bindings)
 
@@ -104,6 +105,7 @@ process Compute_Kernel {
       --lambda1 $params.lambda1\
       --processes $params.nb_threads\
       --lambda2 $params.lambda2\
+      --b_thr $params.b_thr\
       --save_kernels kernels/ \
       --compute_only
     """
