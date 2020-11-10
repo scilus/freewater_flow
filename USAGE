@@ -23,8 +23,10 @@ DESCRIPTION
                                             ├── bvec
                                             └── dwi.nii.gz
 
-Files can come out of the TractoFlow pipeline, including all preprocessing steps. If so, you should select the
-DWI in Resample_DWI, brain mask in Resample_B0, bval/bvec from Eddy_Topup.
+Files should come out of the Tractoflow pipeline, with the following source:
+- dwi.nii.gz: from Resample_DWI
+- brain_mask.nii.gz: from Resample_B0
+- bval/bvec: from Eddy_Topup
 
 OPTIONAL ARGUMENTS (current value)
 
