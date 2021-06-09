@@ -8,6 +8,7 @@ if(params.help) {
 
     engine = new groovy.text.SimpleTemplateEngine()
 
+    cpu_count = Runtime.runtime.availableProcessors()
     bindings = ["nb_threads":"$params.nb_threads",
                 "para_diff": "$params.para_diff",
                 "iso_diff": "$params.iso_diff",
@@ -16,7 +17,8 @@ if(params.help) {
                 "lambda1": "$params.lambda1",
                 "lambda2": "$params.lambda2",
                 "output_dir":"$params.output_dir",
-                "b_thr":"$params.b_thr"]
+                "b_thr":"$params.b_thr",
+                "cpu_count":"$cpu_count"]
 
     template = engine.createTemplate(usage.text).make(bindings)
 

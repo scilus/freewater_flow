@@ -39,6 +39,9 @@ OPTIONAL ARGUMENTS (current value)
 --lambda2                               Second regularization parameter. ($lambda2)
 --b_thr                                 Limit value to consider that a b-value is on an existing shell. Above this limit, the b-value is placed on a new shell. This includes b0s values. ($b_thr)
 
+--processes                             The number of parallel processes to launch ($cpu_count).
+                                        Only affects the local scheduler.
+
 NOTES
 
 Requires AMICO installed.
