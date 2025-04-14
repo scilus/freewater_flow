@@ -97,7 +97,7 @@ process Compute_Kernel {
 
   script:
     """
-    scil_compute_freewater.py $dwi $bval $bvec\
+    scil_freewater_maps.py $dwi $bval $bvec\
       --mask $brain_mask\
       --para_diff $params.para_diff\
       --perp_diff_min $params.perp_diff_min\
@@ -124,15 +124,15 @@ process Compute_FreeWater {
     set sid, file(brain_mask), file(bval), file(bvec), file(dwi), file(kernels) from data_with_kernel_for_fw
 
     output:
-    set sid, "${sid}__dwi_fw_corrected.nii.gz" into fw_corrected_dwi
-    file "${sid}__FIT_dir.nii.gz"
-    file "${sid}__FIT_FiberVolume.nii.gz"
-    file "${sid}__FIT_FW.nii.gz"
-    file "${sid}__FIT_nrmse.nii.gz"
+    set sid, "${sid}__dwi_fw_corrected.nii.gz" into fw_corrected_dwi optional true
+    file "${sid}__dir.nii.gz" optional true
+    file "${sid}__FiberVolume.nii.gz" optional true
+    file "${sid}__FW.nii.gz" optional true
+    file "${sid}__nrmse.nii.gz" optional true
 
     script:
     """
-    scil_compute_freewater.py $dwi $bval $bvec\
+    scil_freewater_maps.py $dwi $bval $bvec\
         --mask $brain_mask\
         --para_diff $params.para_diff\
         --perp_diff_min $params.perp_diff_min\
@@ -143,11 +143,11 @@ process Compute_FreeWater {
         --lambda2 $params.lambda2\
         --load_kernels $kernels
 
-    mv results/dwi_fw_corrected.nii.gz ${sid}__dwi_fw_corrected.nii.gz
-    mv results/FIT_dir.nii.gz ${sid}__FIT_dir.nii.gz
-    mv results/FIT_FiberVolume.nii.gz ${sid}__FIT_FiberVolume.nii.gz
-    mv results/FIT_FW.nii.gz ${sid}__FIT_FW.nii.gz
-    mv results/FIT_nrmse.nii.gz ${sid}__FIT_nrmse.nii.gz
+    mv results/DWI_corrected.nii.gz ${sid}__dwi_fw_corrected.nii.gz
+    mv results/fit_dir.nii.gz ${sid}__dir.nii.gz
+    mv results/fit_FiberVolume.nii.gz ${sid}__FiberVolume.nii.gz
+    mv results/fit_FW.nii.gz ${sid}__FW.nii.gz
+    mv results/fit_NRMSE.nii.gz ${sid}__NRMSE.nii.gz
     rm -rf results
     """
 }
@@ -195,8 +195,8 @@ process FW_Corrected_Metrics {
     export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
     export OMP_NUM_THREADS=1
     export OPENBLAS_NUM_THREADS=1
-    scil_image_math.py convert $brain_mask $brain_mask -f --data_type int16
-    scil_compute_dti_metrics.py $fw_corrected_dwi $bval $bvec --mask $brain_mask\
+    scil_volume_math.py convert $brain_mask $brain_mask -f --data_type int16
+    scil_dti_metrics.py $fw_corrected_dwi $bval $bvec --mask $brain_mask\
         --ad ${sid}__fw_corr_ad.nii.gz --evecs ${sid}__fw_corr_evecs.nii.gz\
         --evals ${sid}__fw_corr_evals.nii.gz --fa ${sid}__fw_corr_fa.nii.gz\
         --ga ${sid}__fw_corr_ga.nii.gz --rgb ${sid}__fw_corr_rgb.nii.gz\
